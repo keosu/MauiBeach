@@ -10,6 +10,7 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+
 permissions:
   contents: read
 
@@ -24,11 +25,6 @@ jobs:
     runs-on: windows-2022
     name: Android Build
     steps:
-
-      - name: Harden Runner
-        uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
         uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
@@ -59,11 +55,6 @@ jobs:
     name: Windows Build
     steps:
 
-      - name: Harden Runner
-        uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
       - name: Checkout
         uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
 
@@ -92,11 +83,6 @@ jobs:
     runs-on: macos-12
     name: iOS Build
     steps:
-
-      - name: Harden Runner
-        uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
         uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
@@ -127,11 +113,6 @@ jobs:
     name: MacCatalyst Build
     steps:
     
-      - name: Harden Runner
-        uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
       - name: Checkout
         uses: actions/checkout@d0651293c4a5a52e711f25b41b05b2212f385d28
 
