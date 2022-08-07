@@ -12,7 +12,9 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@74b568e8591fbb3115c70f3436a0c6b0909a8504
       with:
-        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+        egress-policy: block
+        allowed-endpoints: >
+          api.github.com:443
 
     - uses: samspills/assign-pr-to-author@fa6bf795a8eeede8e72ddd284abbcc266fed4ba1
       if: github.event_name == 'pull_request' && github.event.action == 'opened'
