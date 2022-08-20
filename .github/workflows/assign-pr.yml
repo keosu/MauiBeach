@@ -16,7 +16,7 @@ jobs:
         allowed-endpoints: >
           api.github.com:443
 
-    - uses: samspills/assign-pr-to-author@fa6bf795a8eeede8e72ddd284abbcc266fed4ba1
+    - uses: samspills/assign-pr-to-author@b313feb250ff414d3aff26525b986f080ee7bd7a
       if: github.event_name == 'pull_request' && github.event.action == 'opened'
       with:
         repo-token: '${{ secrets.GITHUB_TOKEN }}'
