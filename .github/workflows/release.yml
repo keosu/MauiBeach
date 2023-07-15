@@ -32,36 +32,25 @@ jobs:
               run: dotnet workload install maui --ignore-failed-sources
       
             - name: Restore Dependencies
-              run: dotnet restore MauiBeach/MauiBeach.csproj
-      
-
+              run: dotnet restore MauiBeach/MauiBeach.csproj 
 
             - name: Build MAUI Windows
-              run: dotnet build MauiBeach/MauiBeach.csproj -c Release -f net7.0-windows10.0.19041.0
-            
-            - name: Upload Windows Artifact
-              uses: actions/upload-artifact@v3
-              with:
-                      name: mauibeach-windows-ci-build
-                      path: MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix
-                  
-            - name: release-exe
-              uses: ncipollo/release-action@v1
-              with:
-                        artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix"  
-                        generateReleaseNotes: true
+              run: dotnet publish MauiBeach/MauiBeach.csproj -c Release -f net7.0-windows10.0.19041.0 
 
             - name: Build MAUI Android
               run: dotnet publish MauiBeach/MauiBeach.csproj -c Release -f net7.0-android --no-restore
                 
-            - name: Upload Android Artifact
+            - name: Upload Artifact
               uses: actions/upload-artifact@v3
               with:
-                          name: mauibeach-android-ci-build
-                          path: MauiBeach/bin/Release/net7.0-android/*Signed.a*
+                      name: mauibeach-windows-ci-build
+                      path: |
+                        MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix
+                        MauiBeach/bin/Release/net7.0-android/*Signed.a*
                 
-            - name: release-apk
+            - name: release
               uses: ncipollo/release-action@v1
               with:
-                              artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.apk"  
-                              generateReleaseNotes: true
+                    artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix, MauiBeach/bin/Release/net7.0-android/*Signed.apk"  
+                    token: ${{ github.token }}
+                    generateReleaseNotes: true
