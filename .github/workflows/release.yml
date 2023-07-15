@@ -32,21 +32,7 @@ jobs:
             - name: Restore Dependencies
               run: dotnet restore MauiBeach/MauiBeach.csproj
       
-            - name: Build MAUI Android
-              run: dotnet publish MauiBeach/MauiBeach.csproj -c Release -f net7.0-android --no-restore
-      
-            - name: Upload Android Artifact
-              uses: actions/upload-artifact@v3
-              with:
-                name: mauibeach-android-ci-build
-                path: MauiBeach/bin/Release/net7.0-android/*Signed.a*
-      
-            - name: release-apk
-              uses: ncipollo/release-action@v1
-              with:
-                    artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.a*" 
-                    token: ${{ github.token }}
-                    generateReleaseNotes: true
+
 
             - name: Build MAUI Windows
               run: dotnet build MauiBeach/MauiBeach.csproj -c Release -f net7.0-windows10.0.19041.0
@@ -63,4 +49,19 @@ jobs:
                         artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix" 
                         token: ${{ github.token }}
                         generateReleaseNotes: true
-       
+
+            - name: Build MAUI Android
+              run: dotnet publish MauiBeach/MauiBeach.csproj -c Release -f net7.0-android --no-restore
+                
+            - name: Upload Android Artifact
+              uses: actions/upload-artifact@v3
+              with:
+                          name: mauibeach-android-ci-build
+                          path: MauiBeach/bin/Release/net7.0-android/*Signed.a*
+                
+            - name: release-apk
+              uses: ncipollo/release-action@v1
+              with:
+                              artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.apk" 
+                              token: ${{ github.token }}
+                              generateReleaseNotes: true
