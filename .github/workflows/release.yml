@@ -15,7 +15,9 @@ jobs:
     # MAUI release
     release_win_anroid:
           runs-on: windows-2022
-          name: Android Build
+          name: release_win_anroid
+          permissions:
+            contents: write
           steps:
       
             - name: Checkout
@@ -46,8 +48,7 @@ jobs:
             - name: release-exe
               uses: ncipollo/release-action@v1
               with:
-                        artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix" 
-                        token: ${{ github.token }}
+                        artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix"  
                         generateReleaseNotes: true
 
             - name: Build MAUI Android
@@ -62,6 +63,5 @@ jobs:
             - name: release-apk
               uses: ncipollo/release-action@v1
               with:
-                              artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.apk" 
-                              token: ${{ github.token }}
+                              artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.apk"  
                               generateReleaseNotes: true
