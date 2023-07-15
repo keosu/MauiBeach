@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push: 
+    tags:
+      - 'v*'  
+
+
+env:
+    DOTNET_NOLOGO: true                     # Disable the .NET logo
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
+    DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
+      
+jobs:
+    # MAUI release
+    release_win_anroid:
+          runs-on: windows-2022
+          name: Android Build
+          steps:
+      
+            - name: Checkout
+              uses: actions/checkout@v3
+      
+            - name: Setup .NET 7
+              uses: actions/setup-dotnet@v3
+              with:
+                dotnet-version: 7.0.x
+                
+            - name: Install MAUI Workload
+              run: dotnet workload install maui --ignore-failed-sources
+      
+            - name: Restore Dependencies
+              run: dotnet restore MauiBeach/MauiBeach.csproj
+      
+            - name: Build MAUI Android
+              run: dotnet publish MauiBeach/MauiBeach.csproj -c Release -f net7.0-android --no-restore
+      
+            - name: Upload Android Artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: mauibeach-android-ci-build
+                path: MauiBeach/bin/Release/net7.0-android/*Signed.a*
+      
+            - name: release-apk
+              uses: ncipollo/release-action@v1
+              with:
+                    artifacts: "MauiBeach/bin/Release/net7.0-android/*Signed.a*" 
+                    token: ${{ github.token }}
+                    generateReleaseNotes: true
+
+            - name: Build MAUI Windows
+              run: dotnet build MauiBeach/MauiBeach.csproj -c Release -f net7.0-windows10.0.19041.0
+            
+            - name: Upload Windows Artifact
+              uses: actions/upload-artifact@v3
+              with:
+                      name: mauibeach-windows-ci-build
+                      path: MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix
+                  
+            - name: release-exe
+              uses: ncipollo/release-action@v1
+              with:
+                        artifacts: "MauiBeach/bin/Release/net7.0-windows10.0.19041.0/win10-x64/AppPackages/MauiBeach*/MauiBeach*.msix" 
+                        token: ${{ github.token }}
+                        generateReleaseNotes: true
+       
