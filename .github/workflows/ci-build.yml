@@ -106,7 +106,7 @@ jobs:
         run: dotnet restore MauiBeach/MauiBeach.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build MauiBeach/MauiBeach.csproj -c Release -f net7.0-ios --no-restore /p:buildForSimulator=True /p:packageApp=True /p:ArchiveOnBuild=False /p:PublishTrimmed=False 
+        run: dotnet build MauiBeach/MauiBeach.csproj -c Release -f net7.0-ios --no-restore /p:packageApp=True /p:ArchiveOnBuild=True
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v3
